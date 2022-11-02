@@ -78,7 +78,7 @@ stages:
   displayName: 'Deploy to Dev'
   # condition: and(succeeded(), eq(variables.isMain, 'true'))
   variables: 
-    appName: 'bermtecdev2'
+    appName: 'Madhu-webapp-1'
   jobs:
   - deployment: 'Dev'
 
@@ -90,7 +90,7 @@ stages:
           - task: AzureRmWebAppDeployment@4
             inputs:
               ConnectionType: 'AzureRM'
-              azureSubscription: '*'
-              appType: 'webAppLinux'
+              azureSubscription: 'Azure subscription 1'
+              appType: 'webApp'
               WebAppName: $(appName)
-              packageForLinux: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
+              packageForWindows: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
