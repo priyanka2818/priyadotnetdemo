@@ -9,74 +9,16 @@ trigger:
 - master
 
 pool:
-  name: 'Demo'
+  vmimage: 'Hosted Agent'
 
 variables:
   buildConfiguration: 'Release'
-  dotNetFramework: 'net6.0'
-  repository: 'walmartpayment'
-  namespace: 'walmartdev'
-  k8sconnection: 'kubewalmartdev'
-  imagePullSecret: 'test'
-
+  
+  
 stages:
-- stage: 'Build'
-  jobs:
-  - job: 'Build'
+ stage: 'Build'
     steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'ACRDocker'
-          repository: '$(repository)'
-          command: 'buildAndPush'
-          Dockerfile: '**/Dockerfile'
-          tags: |
-            latest
-            $(Build.BuildNumber)
+      - script: dotnet build --configuration $(buildConfiguration)
+        displayName: 'dotnet build $(buildConfiguration)'
 
-      - task: PublishPipelineArtifact@1
-        inputs:
-          artifactName: 'manifests'
-          path: 'manifests'
-
-- stage: 'Deploy'
-  displayName: 'Deployment to Dev'
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy to AKS
-    pool:
-      name: 'Demo'   
-    environment: 'Dev'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-           - task: DownloadPipelineArtifact@2
-             displayName: 'Download Manifests'
-             inputs:
-                artifactName: 'manifests'
-                downloadPath: '$(System.ArtifactsDirectory)/manifests'
-
-           - task: KubernetesManifest@0
-             displayName: Create imagePullSecret
-             inputs:
-                kubernetesServiceConnection: $(k8sconnection)
-                action: createSecret
-                secretName: $(imagePullSecret)
-                namespace: $(namespace)
-                dockerRegistryEndpoint: 'ACRDocker'
-              
-           - task: KubernetesManifest@0
-             displayName: Deploy
-             inputs:
-              kubernetesServiceConnection: $(k8sconnection)
-              action: deploy
-              namespace: $(namespace)
-              manifests: |
-                $(System.ArtifactsDirectory)/manifests/deployment.yaml
-                $(System.ArtifactsDirectory)/manifests/Service.yaml
-                $(System.ArtifactsDirectory)/manifests/Ingress.yaml
-              imagePullSecrets: |
-                $(imagePullSecret)
-              arguments: '-n=walmartdev'
   
