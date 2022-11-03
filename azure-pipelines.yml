@@ -9,7 +9,8 @@ trigger:
 - master
 
 pool:
-  name: 'Demo'
+  vmImage: ubuntu-latest
+
 
 variables:
   buildConfiguration: 'Release'
