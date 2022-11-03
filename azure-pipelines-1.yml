@@ -88,7 +88,7 @@ stages:
   jobs:
   - deployment: 'Dev'
 
-    environment: 'Develop'
+    environment: 'Dev'
     strategy: 
        runOnce:     
         deploy:
@@ -97,6 +97,6 @@ stages:
             inputs:
               ConnectionType: 'AzureRM'
               azureSubscription: 'Azure subscription 1'
-              appType: 'webApp'
+              appType: 'webAppLinux'
               WebAppName: $(appName)
               packageForWindows: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
