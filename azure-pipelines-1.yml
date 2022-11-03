@@ -100,3 +100,4 @@ stages:
               appType: 'webAppLinux'
               WebAppName: $(appName)
               packageForLinux: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
+
