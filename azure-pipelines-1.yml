@@ -84,7 +84,7 @@ stages:
   displayName: 'Deploy to test'
   # condition: and(succeeded(), eq(variables.isMain, 'true'))
   variables: 
-    appName: 'appservetest2'
+    appName: 'appservtest2'
   jobs:
   - deployment: 'test'
 
