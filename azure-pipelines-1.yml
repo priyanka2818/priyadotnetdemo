@@ -80,15 +80,15 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifaceName)
 
-- stage: 'DeployDev'
-  displayName: 'Deploy to Dev'
+- stage: 'Deploytest'
+  displayName: 'Deploy to test'
   # condition: and(succeeded(), eq(variables.isMain, 'true'))
   variables: 
-    appName: 'projectappservicetest'
+    appName: 'appservetest2'
   jobs:
-  - deployment: 'Dev'
+  - deployment: 'test'
 
-    environment: 'Dev'
+    environment: 'test'
     strategy: 
        runOnce:     
         deploy:
@@ -100,3 +100,25 @@ stages:
               appType: 'webAppLinux'
               WebAppName: $(appName)
               packageForLinux: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
+
+- stage: 'Deployprod'
+  displayName: 'Deploy to prod'
+  # condition: and(succeeded(), eq(variables.isMain, 'true'))
+  variables: 
+    appName: 'testprodd'
+  jobs:
+  - deployment: 'prod'
+
+    environment: 'prod'
+    strategy: 
+       runOnce:     
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'cloud'
+              appType: 'webAppLinux'
+              WebAppName: $(appName)
+              packageForLinux: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
+
