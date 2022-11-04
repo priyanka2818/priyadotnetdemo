@@ -101,6 +101,7 @@ stages:
               WebAppName: $(appName)
               packageForLinux: '$(Pipeline.Workspace)/$(artifaceName)/$(buildConfiguration)/*.zip'
 
+
 - stage: 'Deployprod'
   displayName: 'Deploy to prod'
   # condition: and(succeeded(), eq(variables.isMain, 'true'))
