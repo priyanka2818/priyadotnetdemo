@@ -20,6 +20,18 @@ variables:
   k8sconnection: 'kubewalmartdev'
   imagePullSecret: 'test'
 
+- task: Docker@2
+  inputs:
+    containerRegistry: 'dockerconnection'
+    repository: 'priyadotnetdemo'
+    command: 'buildAndPush'
+    Dockerfile: '**/Dockerfile'
+
+
+
+
+
+
 stages:
 - stage: 'Build'
   jobs:
@@ -27,7 +39,7 @@ stages:
     steps:
       - task: Docker@2
         inputs:
-          containerRegistry: 'ACRDocker'
+          containerRegistry: 'dockerconnection'
           repository: '$(repository)'
           command: 'buildAndPush'
           Dockerfile: '**/Dockerfile'
