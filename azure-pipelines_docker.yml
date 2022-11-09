@@ -35,7 +35,7 @@ stages:
     #     publishLocation: 'Container'
     - task: Docker@2
       inputs:
-        containerRegistry: 'ACRdocker'
+        containerRegistry: 'ACRDocker'
         repository: '$(repository)'
         command: 'buildAndPush'
         Dockerfile: '**/Dockerfile'
