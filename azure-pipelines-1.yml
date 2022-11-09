@@ -24,12 +24,11 @@ stages:
   - job: 'BuildClient'
     displayName: 'Build job'
 
-    steps:
-     task: Docker@2
-     inputs:
-       containerRegistry: 'dockertes'
-       repository: 'priyadotnetdemo'
-       command: 'buildAndPush'
-       Dockerfile: '**/Dockerfile'
-
-    
+     steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'dockertes'
+          repository: 'priyadotnetdemo'
+          command: 'buildAndPush'
+          Dockerfile: '**/Dockerfile'
+  
